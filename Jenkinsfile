@@ -1,33 +1,31 @@
 node {
-    def app
 
-    stage('Clone repository') {
-        /* Cloning the Repository to our Workspace */
-
-        git 'https://github.com/FerasTamimi201/jenkins-client-build.git'
+    stage('Initialize')
+    {
+        def dockerHome = tool 'MyDocker'
+        def mavenHome  = tool 'MyMaven'
+        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
     }
 
-    stage('Build image') {
-        /* This builds the actual image */
-
-        app = docker.build("ferastamimi95/client")
+    stage('Checkout') 
+    {
+        checkout scm
     }
 
-    stage('Test image') {
-        
-        app.inside {
-            echo "Tests passed"
+      stage('Build') 
+           {
+            sh 'uname -a'
+            sh 'mvn -B -DskipTests clean package'  
+          }
+
+        stage('Test') 
+        {
+            //sh 'mvn test'
+            sh 'ifconfig' 
         }
-    }
 
-    stage('Push image') {
-        /* 
-			You would need to first register with DockerHub before you can push images to your account
-		*/
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-            } 
-                echo "Trying to Push Docker Build to DockerHub"
-    }
+        stage('Deliver') 
+          {
+                sh 'bash ./jenkins/deliver.sh'
+        }
 }
