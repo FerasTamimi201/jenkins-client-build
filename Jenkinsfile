@@ -1,10 +1,11 @@
-node {
+pipeline {
+    agent any
     def app
 
     stage('Clone repository') {
         /* Cloning the Repository to our Workspace */
 
-        git 'git@github.com:FerasTamimi201/jenkins-client-build.git'
+        git 'https://github.com/FerasTamimi201/jenkins-client-build.git'
     }
 
     stage('Build image') {
