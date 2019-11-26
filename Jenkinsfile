@@ -4,7 +4,7 @@ node {
     stage('Clone repository') {
         /* Cloning the Repository to our Workspace */
 
-        checkout scm
+        git 'https://github.com/FerasTamimi201/jenkins-client-build'
     }
 
     stage('Build image') {
