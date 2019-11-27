@@ -11,5 +11,3 @@ node('master') {
                 sh "bash ./build.sh;"
                 }
         }
-        
-        }
