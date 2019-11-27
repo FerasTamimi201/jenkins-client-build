@@ -5,7 +5,7 @@ node('master') {
         }
         stage('Build') {
             docker
-                .image('ferastamimi95/client-2')
+                .image('ferastamimi95/client')
                 .inside('--volumes-from jenkins-master') {
                     sh "bash ./build.sh;"
                 }
