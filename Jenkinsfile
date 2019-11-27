@@ -8,6 +8,5 @@ node('master') {
             docker
                 sh 'docker build -t ferastamimi95/client .'
                 
-                sh "bash ./build.sh;"
                 }
-        }
+         }      
