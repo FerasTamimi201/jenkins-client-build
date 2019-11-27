@@ -1,18 +1,18 @@
-pipeline {
-    agent any
-
-    stages{
-        stage('Build Stage') {
-            steps{ 
-                echo 'hello'
-                sh 'docker build -t ferastamimi95/client-build .'
-
-            }
-        
-           
+node('master') {
+    docker.withServer('unix:///var/run/docker.sock') {
+        stage('Git clone') {
+            git 'https://github.com/FerasTamimi201/jenkins-client-build'
         }
-        stage('Checkout scm') {
-            Checkout scm
+        stage('Build') {
+            docker
+                .image('ferastamimi95/client-2')
+                .inside('--volumes-from jenkins-master') {
+                    sh "bash ./build.sh;"
+                }
+        }
+        
+        }
+        
         }
     }
 }
